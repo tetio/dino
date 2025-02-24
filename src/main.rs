@@ -1,0 +1,69 @@
+use raylib::prelude::*;
+use dino::Dino;
+use mob::Mob;
+
+const SCREEN_WIDTH: u32 = 800;
+const SCREEN_HEIGHT: u32 = 600;
+
+mod dino;
+mod mob;
+
+
+
+fn main() {
+    let (mut rl, thread) = raylib::init()
+        .size(SCREEN_WIDTH as i32, SCREEN_HEIGHT as i32)
+        .title("Raylib Example")
+        .build();
+
+    let mut dino = Dino {
+        position: vec![100, 100],
+        speed: 10.0,
+        image: rl.load_texture(&thread, "assets/dino.png").unwrap(),
+    };
+
+
+
+    let mob = Mob {
+        position: vec![500, 100],
+        speed: 10.0,
+        image: rl.load_texture(&thread, "assets/dino.png").unwrap(),
+    };
+
+    let mob1 = Mob {
+        position: vec![564, 167],
+        speed: 10.0,
+        image: rl.load_texture(&thread, "assets/dino.png").unwrap(),
+    };
+
+    let obstacle = Rectangle::new(400.0, 400.0, 200.0, 200.0);
+    
+
+    while !rl.window_should_close() {
+        // Event handling
+        if rl.is_key_pressed(KeyboardKey::KEY_UP) {
+            dino.position[1] -= dino.speed as i32;
+        }
+        if rl.is_key_pressed(KeyboardKey::KEY_DOWN) {
+            dino.position[1] += dino.speed as i32;
+        }
+        if rl.is_key_pressed(KeyboardKey::KEY_RIGHT) {
+            dino.position[0] += dino.speed as i32;
+        }
+        if rl.is_key_pressed(KeyboardKey::KEY_LEFT) {
+            dino.position[0] -= dino.speed as i32;
+        }
+
+        let is_colliding = obstacle.check_collision_recs(&dino.get_rectangle());//CheckCollisionRecs(dino.getRectangle(), obstacle);
+        let mut d = rl.begin_drawing(&thread);
+        d.clear_background(Color::WHITE);
+        d.draw_text("Congrats! You have a Dino!", 10, 10, 20, Color::DARKGRAY);
+        d.draw_rectangle_lines_ex(obstacle, 3.0, Color::BLACK);
+        dino.draw(&mut d);
+        mob.draw(&mut d);
+        mob1.draw(&mut d);
+        if is_colliding {
+            d.draw_rectangle_lines_ex(dino.get_rectangle(), 3.0, Color::RED);
+        }
+    }
+}
