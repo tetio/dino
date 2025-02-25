@@ -15,6 +15,8 @@ fn main() {
         .size(SCREEN_WIDTH as i32, SCREEN_HEIGHT as i32)
         .title("Raylib Example")
         .build();
+    rl.set_target_fps(12);
+
 
     let mut dino = Dino {
         position: vec![100, 100],
@@ -25,15 +27,15 @@ fn main() {
 
 
     let mob = Mob {
-        position: vec![500, 100],
+        position: Vector2::new(500 as f32, 100 as f32),
         speed: 10.0,
-        image: rl.load_texture(&thread, "assets/dino.png").unwrap(),
+        image: rl.load_texture(&thread, "assets/mob.png").unwrap(),
     };
 
     let mob1 = Mob {
-        position: vec![564, 167],
+        position: Vector2::new(564.0, 167.0),
         speed: 10.0,
-        image: rl.load_texture(&thread, "assets/dino.png").unwrap(),
+        image: rl.load_texture(&thread, "assets/mob.png").unwrap(),
     };
 
     let obstacle = Rectangle::new(400.0, 400.0, 200.0, 200.0);
@@ -41,16 +43,16 @@ fn main() {
 
     while !rl.window_should_close() {
         // Event handling
-        if rl.is_key_pressed(KeyboardKey::KEY_UP) {
+        if rl.is_key_down(KeyboardKey::KEY_UP) {
             dino.position[1] -= dino.speed as i32;
         }
-        if rl.is_key_pressed(KeyboardKey::KEY_DOWN) {
+        if rl.is_key_down(KeyboardKey::KEY_DOWN) {
             dino.position[1] += dino.speed as i32;
         }
-        if rl.is_key_pressed(KeyboardKey::KEY_RIGHT) {
+        if rl.is_key_down(KeyboardKey::KEY_RIGHT) {
             dino.position[0] += dino.speed as i32;
         }
-        if rl.is_key_pressed(KeyboardKey::KEY_LEFT) {
+        if rl.is_key_down(KeyboardKey::KEY_LEFT) {
             dino.position[0] -= dino.speed as i32;
         }
 
