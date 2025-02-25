@@ -26,17 +26,11 @@ fn main() {
 
     let mob_image = rl.load_texture(&thread, "assets/mob.png").unwrap();
 
-    let mob = Mob {
-        position: Vector2::new(500 as f32, 100 as f32),
-        speed: 10.0,
-        image: &mob_image,
-    };
+    let mut mob = Mob::init(Vector2::new(500 as f32, 100 as f32), &mob_image);
 
-    let mob1 = Mob {
-        position: Vector2::new(564.0, 167.0),
-        speed: 10.0,
-        image: &mob_image,
-    };
+    let mut mob1 = Mob::init( Vector2::new(564.0, 167.0), &mob_image);
+
+    let mut mob2 = Mob::init( Vector2::new(464.0, 267.0), &mob_image);
 
     let obstacle = Rectangle::new(400.0, 400.0, 200.0, 200.0);
     
@@ -56,6 +50,12 @@ fn main() {
             dino.position[0] -= dino.speed as i32;
         }
 
+        // Update
+        mob.update();
+        mob1.update();
+        mob2.update();
+
+
         let is_colliding = obstacle.check_collision_recs(&dino.get_rectangle());//CheckCollisionRecs(dino.getRectangle(), obstacle);
         let mut d = rl.begin_drawing(&thread);
         d.clear_background(Color::WHITE);
@@ -64,6 +64,7 @@ fn main() {
         dino.draw(&mut d);
         mob.draw(&mut d);
         mob1.draw(&mut d);
+        mob2.draw(&mut d);
         if is_colliding {
             d.draw_rectangle_lines_ex(dino.get_rectangle(), 3.0, Color::RED);
         }
