@@ -15,8 +15,8 @@ fn main() {
         .size(SCREEN_WIDTH as i32, SCREEN_HEIGHT as i32)
         .title("Raylib Example")
         .build();
+    
     rl.set_target_fps(12);
-
 
     let mut dino = Dino {
         position: vec![100, 100],
@@ -24,18 +24,18 @@ fn main() {
         image: rl.load_texture(&thread, "assets/dino.png").unwrap(),
     };
 
-
+    let mob_image = rl.load_texture(&thread, "assets/mob.png").unwrap();
 
     let mob = Mob {
         position: Vector2::new(500 as f32, 100 as f32),
         speed: 10.0,
-        image: rl.load_texture(&thread, "assets/mob.png").unwrap(),
+        image: &mob_image,
     };
 
     let mob1 = Mob {
         position: Vector2::new(564.0, 167.0),
         speed: 10.0,
-        image: rl.load_texture(&thread, "assets/mob.png").unwrap(),
+        image: &mob_image,
     };
 
     let obstacle = Rectangle::new(400.0, 400.0, 200.0, 200.0);

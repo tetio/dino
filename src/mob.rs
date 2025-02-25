@@ -1,12 +1,12 @@
 use raylib::prelude::*;
 
-pub struct Mob {
+pub struct Mob<'a> {
     pub position: Vector2,
     pub speed: f32,
-    pub image: Texture2D,
+    pub image: &'a Texture2D,
 }
 
-impl Mob {
+impl<'a> Mob<'a> {
     pub fn draw(&self, d: &mut RaylibDrawHandle) {
         d.draw_texture_ex(
             &self.image,
