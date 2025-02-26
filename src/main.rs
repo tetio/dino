@@ -1,6 +1,6 @@
-use raylib::prelude::*;
 use dino::Dino;
 use mob::Mob;
+use raylib::prelude::*;
 
 const SCREEN_WIDTH: u32 = 800;
 const SCREEN_HEIGHT: u32 = 600;
@@ -8,14 +8,12 @@ const SCREEN_HEIGHT: u32 = 600;
 mod dino;
 mod mob;
 
-
-
 fn main() {
     let (mut rl, thread) = raylib::init()
         .size(SCREEN_WIDTH as i32, SCREEN_HEIGHT as i32)
         .title("Raylib Example")
         .build();
-    
+
     rl.set_target_fps(12);
 
     let mut dino = Dino {
@@ -28,12 +26,11 @@ fn main() {
 
     let mut mob = Mob::init(Vector2::new(500 as f32, 100 as f32), &mob_image);
 
-    let mut mob1 = Mob::init( Vector2::new(564.0, 167.0), &mob_image);
+    let mut mob1 = Mob::init(Vector2::new(564.0, 167.0), &mob_image);
 
-    let mut mob2 = Mob::init( Vector2::new(464.0, 267.0), &mob_image);
+    let mut mob2 = Mob::init(Vector2::new(464.0, 267.0), &mob_image);
 
     let obstacle = Rectangle::new(400.0, 400.0, 200.0, 200.0);
-    
 
     while !rl.window_should_close() {
         // Event handling
@@ -55,8 +52,18 @@ fn main() {
         mob1.update();
         mob2.update();
 
+        let is_colliding = obstacle.check_collision_recs(&dino.get_rectangle()); //CheckCollisionRecs(dino.getRectangle(), obstacle);
+        let is_colliding0 = mob
+            .get_rectangle()
+            .check_collision_recs(&dino.get_rectangle());
+        let is_colliding1 = mob1
+            .get_rectangle()
+            .check_collision_recs(&dino.get_rectangle());
+        let is_colliding2 = mob2
+            .get_rectangle()
+            .check_collision_recs(&dino.get_rectangle());
+        // Draw
 
-        let is_colliding = obstacle.check_collision_recs(&dino.get_rectangle());//CheckCollisionRecs(dino.getRectangle(), obstacle);
         let mut d = rl.begin_drawing(&thread);
         d.clear_background(Color::WHITE);
         d.draw_text("Congrats! You have a Dino!", 10, 10, 20, Color::DARKGRAY);
@@ -65,8 +72,17 @@ fn main() {
         mob.draw(&mut d);
         mob1.draw(&mut d);
         mob2.draw(&mut d);
-        if is_colliding {
+        if is_colliding || is_colliding0 || is_colliding1 || is_colliding2 {
             d.draw_rectangle_lines_ex(dino.get_rectangle(), 3.0, Color::RED);
+        }
+        if is_colliding0 {
+            d.draw_rectangle_lines_ex(mob.get_rectangle(), 3.0, Color::RED);
+        }
+        if is_colliding1 {
+            d.draw_rectangle_lines_ex(mob1.get_rectangle(), 3.0, Color::RED);
+        }
+        if is_colliding2 {
+            d.draw_rectangle_lines_ex(mob2.get_rectangle(), 3.0, Color::RED);
         }
     }
 }
